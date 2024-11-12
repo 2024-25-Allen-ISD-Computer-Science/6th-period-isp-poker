@@ -23,12 +23,12 @@ label = tk.Label(window, text="", font=("Arial", 20), fg="white", bg="black")
 label.pack(pady=20)
 
 #test button
-goodbye_button = tk.Button(window, text="test", command=show_goodbye, font=("Arial", 12))
-goodbye_button.pack(side="left", padx=10, pady=20)
+test2_button = tk.Button(window, text="test2", command=show_goodbye, font=("Arial", 12))
+test2_button.pack(side="left", padx=10, pady=20)
 
 #test2 button
-hello_button = tk.Button(window, text="test2", command=show_hello, font=("Arial", 12))
-hello_button.pack(side="right", padx=10, pady=20)
+test_button = tk.Button(window, text="test", command=show_hello, font=("Arial", 12))
+test_button.pack(side="right", padx=10, pady=20)
 
 #clear button
 clear_button = tk.Button(window, text="clear", command=reset_screen, font=("Arial", 12))

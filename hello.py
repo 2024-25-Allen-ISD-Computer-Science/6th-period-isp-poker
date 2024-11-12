@@ -1,16 +1,38 @@
 import tkinter as tk
 
-#Make window
+#show test
+def show_hello():
+    label.config(text="test")
+
+#show test2
+def show_goodbye():
+    label.config(text="test2")
+
+#clear window
+def reset_screen():
+    label.config(text="")#clears
+
+#make window
 window = tk.Tk()
-window.title("poker window test")
-window.geometry("300x200")  #Window size
+window.title("poker test")
+window.geometry("300x200")
+window.configure(bg="black")
 
-# Set the background color and font color
-window.configure(bg="blue")
+# Create a label with no initial text
+label = tk.Label(window, text="", font=("Arial", 20), fg="white", bg="black")
+label.pack(pady=20)
 
-#Make text
-label = tk.Label(window, text="window test", font=("Arial", 20), fg="red", bg="blue")
-label.pack(expand=True)  #Center the label
+#test button
+goodbye_button = tk.Button(window, text="test", command=show_goodbye, font=("Arial", 12))
+goodbye_button.pack(side="left", padx=10, pady=20)
 
-# Run the application
+#test2 button
+hello_button = tk.Button(window, text="test2", command=show_hello, font=("Arial", 12))
+hello_button.pack(side="right", padx=10, pady=20)
+
+#clear button
+clear_button = tk.Button(window, text="clear", command=reset_screen, font=("Arial", 12))
+clear_button.pack(side="bottom", pady=20)
+
+#run
 window.mainloop()

@@ -1,16 +1,41 @@
 import random
 
+# Define suits and ranks
 suits = ["Hearts", "Diamonds", "Clubs", "Spades"]
 ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace"]
 
+# Create a deck of cards
+deck = [f"{rank} of {suit}" for suit in suits for rank in ranks]
 
-def generate_two_cards():
-    deck = [f"{rank} of {suit}" for suit in suits for rank in ranks]
-    selected_cards = random.sample(deck, 2)
-    return selected_cards
+# Function to shuffle and deal the deck
+def shuffle_deck():
+    random.shuffle(deck)
 
+def deal_hand(num_players=2):
+    hands = {f"Player {i+1}": [deck.pop(), deck.pop()] for i in range(num_players)}
+    return hands
 
-cards = generate_two_cards()
-print("Your cards are:")
-print("1.", cards[0])
-print("2.", cards[1])
+def deal_community_cards():
+    # Burn one card before each community card reveal (except the river)
+    deck.pop()  # Burn a card
+    flop = [deck.pop(), deck.pop(), deck.pop()]  # Three cards for the flop
+    deck.pop()  # Burn another card
+    turn = deck.pop()  # One card for the turn
+    deck.pop()  # Burn another card
+    river = deck.pop()  # One card for the river
+    return {"Flop": flop, "Turn": turn, "River": river}
+
+# Initialize the game
+shuffle_deck()
+
+# Deal hands to two players
+hands = deal_hand(2)
+print("Player Hands:")
+for player, hand in hands.items():
+    print(f"{player}: {hand}")
+
+# Deal the community cards
+community_cards = deal_community_cards()
+print("\nCommunity Cards:")
+for stage, cards in community_cards.items():
+    print(f"{stage}: {cards}")

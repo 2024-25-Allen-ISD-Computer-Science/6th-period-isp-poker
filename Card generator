@@ -1,0 +1,17 @@
+import random
+
+# Define suits and ranks for a standard 52-card deck
+suits = ["Hearts", "Diamonds", "Clubs", "Spades"]
+ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace"]
+
+# Generate two random cards
+def generate_two_cards():
+    deck = [f"{rank} of {suit}" for suit in suits for rank in ranks]  # Create a deck of all possible cards
+    selected_cards = random.sample(deck, 2)  # Pick two unique cards from the deck
+    return selected_cards
+
+# Display two random cards
+cards = generate_two_cards()
+print("Your cards are:")
+print("1.", cards[0])
+print("2.", cards[1])

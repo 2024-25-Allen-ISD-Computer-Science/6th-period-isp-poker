@@ -1,17 +1,7 @@
 import random
 import tkinter as tk
-from tkinter import messagebox
-
-# Define suits and ranks
-suits = ["Hearts", "Diamonds", "Clubs", "Spades"]
-ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace"]
-
-# Create a deck of cards
-deck = [f"{rank} of {suit}" for suit in suits for rank in ranks]
-
-import random
-import tkinter as tk
-from tkinter import messagebox
+from tkinter import Toplevel
+from PIL import Image, ImageTk
 
 # Define suits and ranks
 suits = ["Hearts", "Diamonds", "Clubs", "Spades"]
@@ -48,7 +38,7 @@ def open_game_window():
     community_cards = deal_community_cards(deck)
 
     # Create a new window
-    game_window = tk.Toplevel()
+    game_window = Toplevel()
     game_window.title("Poker Game")
     
     # Display player hands
@@ -60,6 +50,18 @@ def open_game_window():
     tk.Label(game_window, text="Community Cards:", font=("Arial", 14, "bold")).pack(pady=10)
     for stage, cards in community_cards.items():
         tk.Label(game_window, text=f"{stage}: {', '.join(cards)}", font=("Arial", 12)).pack(pady=2)
+
+    # Show a card image (just for demonstration purposes)
+    card_image_path = r"C:\Users\aamar\OneDrive\Documents\GitHub\6th-period-isp-poker\assets\card.png"
+    try:
+        card_image = Image.open(card_image_path)
+        card_image = card_image.resize((100, 150))  # Resize image for display
+        card_photo = ImageTk.PhotoImage(card_image)
+        tk.Label(game_window, image=card_photo).pack(pady=10)
+        # Keep reference to prevent garbage collection
+        game_window.image = card_photo
+    except Exception as e:
+        tk.Label(game_window, text=f"Error loading card image: {e}", fg="red", font=("Arial", 10)).pack(pady=10)
 
 # Main window setup
 root = tk.Tk()

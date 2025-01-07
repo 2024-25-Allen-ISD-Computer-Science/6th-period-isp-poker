@@ -3,7 +3,7 @@ import tkinter as tk
 from tkinter import Toplevel
 from PIL import Image, ImageTk
 
-# Define suits and ranks
+# Define suits and rank
 suits = ["Hearts", "Diamonds", "Clubs", "Spades"]
 ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace"]
 

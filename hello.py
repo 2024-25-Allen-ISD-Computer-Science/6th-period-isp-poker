@@ -1,4 +1,4 @@
-import from CardGen.py
+import random
 import tkinter as tk
 from tkinter import Toplevel
 from PIL import Image, ImageTk

@@ -1,25 +1,30 @@
-<!DOCTYPE html>
+OCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Currency Converter</title>
+    <title>Deposit & Currency Converter</title>
 </head>
 <body>
-    <h1>Currency to Vietnamese Dong Converter</h1>
-    <form id="converter-form">
-        <label for="currency">Choose a currency:</label>
+    <h1>Deposit Money and Convert to Vietnamese Dong</h1>
+    
+    <form id="deposit-form">
+        <label for="currency">Select your currency:</label>
         <select id="currency" name="currency" required>
             <option value="USD">USD</option>
             <option value="GBP">GBP</option>
             <option value="EUR">EUR</option>
         </select>
         <br><br>
-<label for="amount">Enter the amount:</label>
-        <input type="number" id="amount" name="amount" min="0" step="0.01" required>
+
+        <label for="deposit-amount">Enter the amount you want to deposit:</label>
+        <input type="number" id="deposit-amount" name="deposit-amount" min="0" step="0.01" required>
         <br><br>
-        <button type="button" onclick="convertCurrency()">Convert</button>
+
+        <button type="button" onclick="convertAndDeposit()">Deposit & Convert</button>
     </form>
+
+    <h2>Conversion Result</h2>
     <p id="result"></p>
 
     <script>
@@ -29,16 +34,18 @@
             GBP: 29000, // Example exchange rate for GBP
             EUR: 25000  // Example exchange rate for EUR
         };
-        function convertCurrency() {
+
+        function convertAndDeposit() {
             const currency = document.getElementById("currency").value;
-            const amount = parseFloat(document.getElementById("amount").value);
-   
-f (!isNaN(amount) && amount >= 0) {
+            const amount = parseFloat(document.getElementById("deposit-amount").value);
+
+            if (!isNaN(amount) && amount > 0) {
                 const convertedAmount = amount * exchangeRates[currency];
                 document.getElementById("result").textContent = 
-                    `${amount} ${currency} is equivalent to ${convertedAmount.toLocaleString()} VND.`;
+                    `You have deposited ${amount.toLocaleString()} ${currency}. ` + 
+                    `This gives you ${convertedAmount.toLocaleString()} VND to use on the website.`;
             } else {
-                document.getElementById("result").textContent = "Please enter a valid amount.";
+                document.getElementById("result").textContent = "Please enter a valid deposit amount.";
             }
         }
     </script>

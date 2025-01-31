@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import simpledialog, messagebox  
 
 # Call Function
 def call():
@@ -12,7 +13,23 @@ def call():
             deck.append(f'{rank}_of_{suit}')
     print(deck)
 
-#Window
+# Raise Function
+def raise_bet():
+    response = messagebox.askyesno("Raise", "Do you want to raise?")
+    if response:
+        amount = simpledialog.askinteger("Raise", "Enter your raise amount:", minvalue=1, parent=root)
+        if amount is not None:
+            print(f"Player raises by {amount} dong.")
+
+# Fold Function
+def fold():
+    messagebox.showinfo("Fold", "Player has folded! Game Over.")
+    call_button.config(state=DISABLED)
+    raise_button.config(state=DISABLED)
+    fold_button.config(state=DISABLED)
+    print("Player has folded. Game Over.")
+
+# Window
 root = Tk()
 root.title('Poker')
 root.geometry("900x500")
@@ -40,10 +57,10 @@ player_label.pack(pady=20)
 call_button = Button(root, text="Call", font=("Times New Roman", 14), command=call)
 call_button.pack(pady=20)
 
-raise_button = Button(root, text="Raise", font=("Times New Roman", 14))
+raise_button = Button(root, text="Raise", font=("Times New Roman", 14), command=raise_bet)
 raise_button.pack(pady=20)
 
-fold_button = Button(root, text="Fold", font=("Times New Roman", 14))
+fold_button = Button(root, text="Fold", font=("Times New Roman", 14), command=fold)
 fold_button.pack(pady=20)
 
 #mainloop

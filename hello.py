@@ -6,6 +6,7 @@ import random
 dong = 5000
 call_made = False
 game_started = False
+player_turn = True
 
 def start_game():
     global deck, dealer_hand, player_hand, dong, call_made, game_started

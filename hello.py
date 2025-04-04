@@ -7,8 +7,10 @@ import random
 dong = 5000
 game_started = False
 player_turn = True
-player_hand = []
 dealer_hand = []
+player_hand = []
+dealer_hidden = True
+
 
 def load_card_image(card_name):
     try:
@@ -17,11 +19,13 @@ def load_card_image(card_name):
     except FileNotFoundError:
         return None
 
+
 def start_game():
-    global deck, dealer_hand, player_hand, dong, game_started
+    global deck, dealer_hand, player_hand, dong, game_started, dealer_hidden
     if game_started:
         return
     game_started = True
+    dealer_hidden = True
     player_hand.clear()
     dealer_hand.clear()
     suits = ["Diamonds", "Clubs", "Hearts", "Spades"]
@@ -30,14 +34,16 @@ def start_game():
     random.shuffle(deck)
     dealer_hand = [deck.pop(), deck.pop()]
     player_hand = [deck.pop(), deck.pop()]
-    
+
     update_ui()
     start_button.config(state=DISABLED)
     enable_buttons()
 
+
 def card_value(card):
     rank = card.split("_")[0]
     return 10 if rank in ['J', 'Q', 'K'] else 11 if rank == 'Ace' else int(rank)
+
 
 def calculate_hand_value(hand):
     total = sum(card_value(card) for card in hand)
@@ -46,6 +52,7 @@ def calculate_hand_value(hand):
         total -= 10
         aces -= 1
     return total
+
 
 def hit():
     global player_hand
@@ -58,18 +65,22 @@ def hit():
         messagebox.showinfo("Game Over", "Bust! You Lose!")
         end_game()
 
+
 def stand():
-    global player_turn
+    global player_turn, dealer_hidden
     player_turn = False
+    dealer_hidden = False
     dealer_turn()
+
 
 def dealer_turn():
     global dealer_hand
     while calculate_hand_value(dealer_hand) < 17:
         dealer_hand.append(deck.pop())
-    update_ui(show_dealer_cards=True)
+    update_ui()
     evaluate_winner()
     end_game()
+
 
 def evaluate_winner():
     global dong
@@ -84,42 +95,50 @@ def evaluate_winner():
     else:
         messagebox.showinfo("Game Over", "It's a Tie!")
 
+
 def end_game():
     global game_started
     game_started = False
     start_button.config(state=NORMAL)
     disable_buttons()
-    update_ui(show_dealer_cards=True)
+    update_ui()
+
 
 def enable_buttons():
     hit_button.config(state=NORMAL)
     stand_button.config(state=NORMAL)
 
+
 def disable_buttons():
     hit_button.config(state=DISABLED)
     stand_button.config(state=DISABLED)
 
-def update_ui(show_dealer_cards=False):
+
+def update_ui():
     for i, label in enumerate(player_card_labels):
         if i < len(player_hand):
             img = load_card_image(player_hand[i])
             label.img = img
             label.config(image=img if img else '', text=player_hand[i] if not img else '')
         else:
-            label.config(image='', text='Empty')
-    
+            label.config(image='', text=' ')
+
     for i, label in enumerate(dealer_card_labels):
         if i < len(dealer_hand):
-            if i == 0 and not show_dealer_cards:
-                label.config(image='', text='[Hidden]')
+            if i == 0 and dealer_hidden:
+                img = load_card_image("Card_Back")
+                label.img = img
+                label.config(image=img if img else '', text='')
             else:
                 img = load_card_image(dealer_hand[i])
                 label.img = img
                 label.config(image=img if img else '', text=dealer_hand[i] if not img else '')
         else:
-            label.config(image='', text='Empty')
-    
+            label.config(image='', text=' ')
+
     dong_label.config(text=f"Dong: {dong}")
+    player_value_label.config(text=f"Player Hand Value: {calculate_hand_value(player_hand)}")
+
 
 def show_help():
     help_text = (
@@ -133,28 +152,32 @@ def show_help():
     )
     messagebox.showinfo("Help", help_text)
 
+
 def setup_ui():
-    global root, dong_label, start_button, hit_button, stand_button, player_card_labels, dealer_card_labels, help_button
+    global root, dong_label, start_button, hit_button, stand_button, player_card_labels, dealer_card_labels, help_button, player_value_label
     root = Tk()
     root.title('Blackjack')
     root.geometry("900x500")
     root.configure(background="green")
-    
+
     dong_label = Label(root, text=f"Dong: {dong}", font=("Arial", 14), bg="green", fg="white")
     dong_label.pack(anchor="ne", padx=20, pady=10)
-    
+
     dealer_frame = Frame(root, bg="green")
     dealer_frame.pack()
     dealer_card_labels = [Label(dealer_frame, bg="green") for _ in range(5)]
     for lbl in dealer_card_labels:
         lbl.pack(side=LEFT, padx=5)
-    
+
     player_frame = Frame(root, bg="green")
     player_frame.pack()
     player_card_labels = [Label(player_frame, bg="green") for _ in range(5)]
     for lbl in player_card_labels:
         lbl.pack(side=LEFT, padx=5)
     
+    player_value_label = Label(root, text="Player Hand Value: 0", font=("Arial", 14), bg="green", fg="white")
+    player_value_label.pack(pady=5)
+
     start_button = Button(root, text="Start Game", font=("Times New Roman", 14), command=start_game)
     start_button.pack(pady=5)
     hit_button = Button(root, text="Hit", font=("Times New Roman", 14), command=hit, state=DISABLED)
@@ -165,7 +188,8 @@ def setup_ui():
     reset_button.pack(pady=5)
     help_button = Button(root, text="Help", font=("Times New Roman", 12), command=show_help)
     help_button.place(relx=1.0, rely=1.0, anchor="se", x=-20, y=-20)
-    
+
     root.mainloop()
+
 
 setup_ui()
